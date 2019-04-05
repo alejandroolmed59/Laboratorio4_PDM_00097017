@@ -1,12 +1,15 @@
 package com.dguardado19.pelisolms
 
+import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Adapter
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,4 +31,34 @@ class MainActivity : AppCompatActivity() {
             adapter= movieAdapter
         }
     }
+    fun addMovieToList(movie: Movie){
+        movieList.add(movie)
+        movieAdapter.changeList(movieList)
+
+    }
+
+    private inner class FetchMovie: AsyncTask<String, Void, String>(){
+        override fun doInBackground(vararg params: String): String {
+            if(params.isNullOrEmpty()) return ""
+            val movieName= params[0]
+            val movieUrl=NetworkUtils.buildUrl(movieName)
+
+            return try{
+                NetworkUtils.getResponseFromHttpUrl(movieUrl)
+            }catch(e: IOException) {
+                ""
+            }
+        }
+
+        override fun onPostExecute(movieInfo: String) {
+            super.onPostExecute(movieInfo)
+            if(!movieInfo.isEmpty()){
+
+            }
+        }
+
+    }
+
+
+
 }

@@ -30,7 +30,7 @@ object NetworkUtils {
     }
 
     @Throws(IOException::class)
-    fun getResponseFromHttpUrl(url: URL): String? {
+    fun getResponseFromHttpUrl(url: URL): String {
         val urlConnection = url.openConnection() as HttpURLConnection
         try {
             val `in` = urlConnection.inputStream
@@ -42,7 +42,7 @@ object NetworkUtils {
             return if (hasInput) {
                 scanner.next()
             } else {
-                null
+                ""
             }
         } finally {
             urlConnection.disconnect()
